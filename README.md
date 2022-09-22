@@ -1,7 +1,14 @@
-# babel-plugin-module-resolver
+# @genx/babel-plugin-module-resolver
+
+Forked from **tleunen/babel-plugin-module-resolver**
+
 [![Maintenance Status][status-image]][status-url] [![NPM version][npm-image]][npm-url] [![Build Status Linux][circleci-image]][circleci-url] [![Build Status Windows][appveyor-image]][appveyor-url] [![Coverage Status][coverage-image]][coverage-url]
 
 A [Babel](http://babeljs.io) plugin to add a new resolver for your modules when compiling your code using Babel. This plugin allows you to add new "root" directories that contain your modules. It also allows you to setup a custom alias for directories, specific files, or even other npm modules.
+
+## Fork Notice
+
+* To support pnpm which use symbolic links and make the resolver failed locate the module.
 
 ## Description
 
@@ -25,11 +32,11 @@ const MyUtilFn = require('../../../../utils/MyUtilFn');
 Install the plugin
 
 ```
-npm install --save-dev babel-plugin-module-resolver
+npm install --save-dev @genx/babel-plugin-module-resolver
 ```
 or
 ```
-yarn add --dev babel-plugin-module-resolver
+yarn add --dev @genx/babel-plugin-module-resolver
 ```
 
 Specify the plugin in your `.babelrc` with the custom root or alias. Here's an example:

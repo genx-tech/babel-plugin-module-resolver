@@ -3,7 +3,13 @@ import path from 'path';
 import { warn } from './log';
 import mapToRelative from './mapToRelative';
 import normalizeOptions from './normalizeOptions';
-import { nodeResolvePath, replaceExtension, isRelativePath, toLocalPath, toPosixPath } from './utils';
+import {
+  nodeResolvePath,
+  replaceExtension,
+  isRelativePath,
+  toLocalPath,
+  toPosixPath,
+} from './utils';
 
 function getRelativePath(sourcePath, currentFile, absFileInRoot, opts) {
   const realSourceFileExtension = path.extname(absFileInRoot);
@@ -21,7 +27,7 @@ function findPathInRoots(sourcePath, { extensions, root }) {
   // Search the source path inside every custom root directory
   let resolvedSourceFile;
 
-  root.some((basedir) => {
+  root.some(basedir => {
     resolvedSourceFile = nodeResolvePath(`./${sourcePath}`, basedir, extensions);
     return resolvedSourceFile !== null;
   });
@@ -77,9 +83,7 @@ function resolvePathFromAliasConfig(sourcePath, currentFile, opts) {
   }
 
   if (isRelativePath(aliasedSourceFile)) {
-    return toLocalPath(toPosixPath(
-      mapToRelative(opts.cwd, currentFile, aliasedSourceFile)),
-    );
+    return toLocalPath(toPosixPath(mapToRelative(opts.cwd, currentFile, aliasedSourceFile)));
   }
 
   if (process.env.NODE_ENV !== 'production') {
@@ -89,24 +93,44 @@ function resolvePathFromAliasConfig(sourcePath, currentFile, opts) {
   return aliasedSourceFile;
 }
 
-const resolvers = [
-  resolvePathFromAliasConfig,
-  resolvePathFromRootConfig,
-];
+const resolvers = [resolvePathFromAliasConfig, resolvePathFromRootConfig];
 
 export default function resolvePath(sourcePath, currentFile, opts) {
   if (isRelativePath(sourcePath)) {
     return sourcePath;
   }
 
-  const normalizedOpts = normalizeOptions(currentFile, opts);
+  const pnpmStore = '/node_modules/.pnpm/';
+  const pos = currentFile.indexOf(pnpmStore);
+  let fixedCurrentFile = currentFile;
+  let fixedOpts = opts;
+
+  if (pos > -1) {
+    const base = currentFile.substring(0, pos);
+
+    if (opts.root) {
+      const right = currentFile.substring(pos + pnpmStore.length);
+      const pos2 = right.indexOf('/');
+
+      fixedCurrentFile = path.join(base, right.substring(pos2 + 1));
+
+      fixedOpts = {
+        ...opts,
+        root: opts.root.map(r =>
+          isRelativePath(r) ? path.relative(process.cwd(), path.join(base, r)) : r
+        ),
+      };
+    }
+  }
+
+  const normalizedOpts = normalizeOptions(currentFile, fixedOpts);
 
   // File param is a relative path from the environment current working directory
   // (not from cwd param)
-  const absoluteCurrentFile = path.resolve(currentFile);
+  const absoluteCurrentFile = path.resolve(fixedCurrentFile);
   let resolvedPath = null;
 
-  resolvers.some((resolver) => {
+  resolvers.some(resolver => {
     resolvedPath = resolver(sourcePath, absoluteCurrentFile, normalizedOpts);
     return resolvedPath !== null;
   });

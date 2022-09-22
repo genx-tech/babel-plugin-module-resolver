@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.1.2](https://github.com/genx-tech/babel-plugin-module-resolver/compare/v4.1.0...v4.1.2) (2022-09-22)
+
 ## [4.1.0](https://github.com/tleunen/babel-plugin-module-resolver/compare/v4.0.0...v4.1.0) (2020-12-15)
 
 

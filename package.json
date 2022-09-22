@@ -1,11 +1,11 @@
 {
-  "name": "babel-plugin-module-resolver",
-  "version": "4.1.0",
+  "name": "@genx/babel-plugin-module-resolver",
+  "version": "4.1.2",
   "main": "lib/index.js",
   "description": "Module resolver plugin for Babel",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tleunen/babel-plugin-module-resolver.git"
+    "url": "https://github.com/genx-tech/babel-plugin-module-resolver.git"
   },
   "engines": {
     "node": ">= 8.0.0"
@@ -13,11 +13,6 @@
   "files": [
     "lib"
   ],
-  "author": {
-    "name": "Tommy Leunen",
-    "email": "tommy.leunen@gmail.com",
-    "url": "http://tommyleunen.com"
-  },
   "license": "MIT",
   "keywords": [
     "babel",
@@ -67,17 +62,6 @@
     "test:watch": "jest --watch",
     "prepublish": "npm run compile",
     "release": "standard-version"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.{js}": [
-      "prettier-eslint --write",
-      "git add"
-    ]
   },
   "jest": {
     "testEnvironment": "node",
