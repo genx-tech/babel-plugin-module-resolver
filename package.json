@@ -2,6 +2,9 @@
   "name": "@genx/babel-plugin-module-resolver",
   "version": "4.1.2",
   "main": "lib/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Module resolver plugin for Babel",
   "repository": {
     "type": "git",
